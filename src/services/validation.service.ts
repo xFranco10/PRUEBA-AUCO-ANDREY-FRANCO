@@ -1,0 +1,43 @@
+import { getCountryInfo } from '../clients/country.client';
+import { InvalidIdError, NotFoundError } from '../errors/app-error';
+import { ValidationModel } from '../models/validation.model';
+import { objectIdSchema, type CreateValidationInput } from '../schemas/validation.schema';
+
+/**
+ * Crea una validación: enriquece con la API externa y guarda en Mongo.
+ * Si la API externa falla, lanza el error y no se guarda nada.
+ * Devuelve el id del registro creado.
+ */
+export async function createValidation(input: CreateValidationInput): Promise<string> {
+  const countryInfo = await getCountryInfo(input.country);
+
+  const created = await ValidationModel.create({
+    name: input.name,
+    document: input.document,
+    country: input.country,
+    enrichment: {
+      commonName: countryInfo.commonName,
+      officialName: countryInfo.officialName,
+      region: countryInfo.region,
+      countryCode: countryInfo.countryCode,
+    },
+  });
+
+  // Aquí se registrará el evento de auditoría en DynamoDB (Fase 4)
+
+  return created.id;
+}
+
+/** Busca una validación por id. Lanza 400 si el id es inválido y 404 si no existe. */
+export async function getValidationById(id: string) {
+  if (!objectIdSchema.safeParse(id).success) {
+    throw new InvalidIdError();
+  }
+
+  const found = await ValidationModel.findById(id);
+  if (!found) {
+    throw new NotFoundError('Validación no encontrada');
+  }
+
+  return found.toJSON();
+}

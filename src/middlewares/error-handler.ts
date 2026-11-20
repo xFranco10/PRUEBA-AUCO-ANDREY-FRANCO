@@ -45,6 +45,28 @@ export function errorHandler(
     return;
   }
 
+  // Errores del parser de body de Express (JSON mal formado, body demasiado grande)
+  if (typeof err === 'object' && err !== null && 'type' in err) {
+    const type = (err as { type: unknown }).type;
+    if (type === 'entity.parse.failed') {
+      const body: ErrorBody = {
+        error: { code: 'INVALID_JSON', message: 'El cuerpo de la petición no es un JSON válido' },
+      };
+      res.status(400).json(body);
+      return;
+    }
+    if (type === 'entity.too.large') {
+      const body: ErrorBody = {
+        error: {
+          code: 'PAYLOAD_TOO_LARGE',
+          message: 'El cuerpo de la petición es demasiado grande',
+        },
+      };
+      res.status(413).json(body);
+      return;
+    }
+  }
+
   // Cualquier otro error es inesperado: se registra y no se expone el detalle al cliente
   console.error('Error no controlado:', err);
   const body: ErrorBody = {

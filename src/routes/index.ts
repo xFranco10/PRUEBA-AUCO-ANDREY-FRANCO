@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { validationRouter } from './validation.routes';
 
 export const router = Router();
 
@@ -7,4 +8,4 @@ router.get('/health', (_req, res) => {
   res.json({ status: 'ok', uptime: process.uptime() });
 });
 
-// Las rutas de /validations se registrarán aquí en la Fase 3
+router.use(validationRouter);
