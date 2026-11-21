@@ -22,13 +22,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xFranco10/PRUEBA-AUCO-ANDREY.git"
+    "url": "git+https://github.com/xFranco10/PRUEBA-AUCO-ANDREY-FRANCO.git"
   },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/xFranco10/PRUEBA-AUCO-ANDREY/issues"
+    "url": "https://github.com/xFranco10/PRUEBA-AUCO-ANDREY-FRANCO/issues"
   },
-  "homepage": "https://github.com/xFranco10/PRUEBA-AUCO-ANDREY#readme",
+  "homepage": "https://github.com/xFranco10/PRUEBA-AUCO-ANDREY-FRANCO#readme",
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.1174.0",
     "@aws-sdk/lib-dynamodb": "^3.1174.0",
