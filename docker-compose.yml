@@ -1,0 +1,16 @@
+services:
+  # DynamoDB Local: emulador oficial de AWS para desarrollo (no cobra ni requiere cuenta AWS)
+  dynamodb:
+    image: amazon/dynamodb-local:latest
+    container_name: auco-dynamodb-local
+    # -sharedDb: una sola base sin importar región/credenciales; -dbPath: persiste en disco
+    command: -jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data
+    # Se ejecuta como root para poder escribir en el volumen nombrado
+    user: root
+    ports:
+      - '8000:8000'
+    volumes:
+      - dynamodb-data:/home/dynamodblocal/data
+
+volumes:
+  dynamodb-data:
