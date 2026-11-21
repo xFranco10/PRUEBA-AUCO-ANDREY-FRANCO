@@ -10,7 +10,7 @@ const emptyToUndefined = <T extends z.ZodType>(schema: T) =>
 const envSchema = z
   .object({
     NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
-    PORT: z.coerce.number().int().positive().default(3001),
+    PORT: z.coerce.number().int().positive().default(3000),
 
     MONGO_URI: z.string().min(1, 'MONGO_URI es requerida'),
     MONGO_DB_NAME: z.string().min(1).default('auco_validations'),

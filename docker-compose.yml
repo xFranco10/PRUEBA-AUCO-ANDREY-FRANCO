@@ -1,4 +1,14 @@
 services:
+  # MongoDB: base principal donde se guardan las validaciones.
+  # El puerto del host se puede cambiar con MONGO_PORT (ej. si ya tienes un Mongo local en 27017).
+  mongo:
+    image: mongo:8
+    container_name: auco-mongo
+    ports:
+      - '${MONGO_PORT:-27017}:27017'
+    volumes:
+      - mongo-data:/data/db
+
   # DynamoDB Local: emulador oficial de AWS para desarrollo (no cobra ni requiere cuenta AWS)
   dynamodb:
     image: amazon/dynamodb-local:latest
@@ -13,4 +23,5 @@ services:
       - dynamodb-data:/home/dynamodblocal/data
 
 volumes:
+  mongo-data:
   dynamodb-data:
