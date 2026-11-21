@@ -44,12 +44,21 @@ npm run dev
 
 El servicio queda en **http://localhost:3000**. Al arrancar crea solo la tabla de auditoría en DynamoDB; si quieres crearla a mano: `npm run db:init`.
 
+Cada petición se imprime en la consola (método, ruta, estado y tiempo), por ejemplo:
+
+```
+POST /validations 201 645.983 ms - 33
+GET /validations/abc 400 1.425 ms - 63
+```
+
+Solo se registra la ruta, nunca el body, así que el documento enviado no aparece en los logs. En las pruebas automáticas este log está desactivado.
+
 ### ¿Ya tienes un MongoDB local en el puerto 27017?
 
 El contenedor de Mongo también usa el 27017 por defecto y chocaría. Tienes dos opciones:
 
 - **Usar tu Mongo y levantar solo DynamoDB:** `docker compose up -d dynamodb` (el `.env.example` ya apunta a `mongodb://localhost:27017`).
-- **Usar el contenedor en otro puerto:** `MONGO_PORT=27018 docker compose up -d` y poner `MONGO_URI=mongodb://localhost:27018` en el `.env`.
+- **Usar el contenedor en otro puerto:** `MONGO_PORT=27018 docker compose up -d` y poner `MONGO_URI=mongodb://localhost:27018` en el `.env`. Si agregas también `MONGO_PORT=27018` al `.env`, basta con `docker compose up -d`, porque Docker Compose lee ese archivo.
 
 ### Producción
 
@@ -208,15 +217,15 @@ npm run test:watch   # modo observación
 
 ## Scripts
 
-| Comando                           | Qué hace                               |
-| --------------------------------- | -------------------------------------- |
-| `npm run dev`                     | Servidor con recarga automática        |
-| `npm run build` / `npm start`     | Compila a `dist/` y lo ejecuta         |
-| `npm test` / `npm run test:watch` | Pruebas                                |
-| `npm run lint` / `npm run format` | ESLint / Prettier                      |
-| `npm run typecheck`               | Verifica tipos sin compilar            |
-| `npm run db:init`                 | Crea la tabla de auditoría en DynamoDB |
-| `npm run audit:list`              | Muestra los eventos de auditoría       |
+| Comando                           | Qué hace                                            |
+| --------------------------------- | --------------------------------------------------- |
+| `npm run dev`                     | Servidor con recarga automática y log de peticiones |
+| `npm run build` / `npm start`     | Compila a `dist/` y lo ejecuta                      |
+| `npm test` / `npm run test:watch` | Pruebas                                             |
+| `npm run lint` / `npm run format` | ESLint / Prettier                                   |
+| `npm run typecheck`               | Verifica tipos sin compilar                         |
+| `npm run db:init`                 | Crea la tabla de auditoría en DynamoDB              |
+| `npm run audit:list`              | Muestra los eventos de auditoría                    |
 
 ## Estructura
 
